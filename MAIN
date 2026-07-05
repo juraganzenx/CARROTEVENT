@@ -47,14 +47,29 @@ while task.wait(CHECK_DELAY) do
         LastState = HasPlantAbove15
 
         if HasPlantAbove15 then
-            print("Ada plant > 15 KG")
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/CARROTEVENT/refs/heads/main/AUTOREJOINIF15KG"))()
+
+            task.spawn(function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/CARROTEVENT/refs/heads/main/AUTOREJOINIF15KG"))()
+            end)
+            
         else
-            print("Tidak ada plant > 15 KG")
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/CARROTEVENT/refs/heads/main/AUTOHARVESTCARROT"))()
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/CARROTEVENT/refs/heads/main/AUTOPLANTCARROT"))()
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/CARROTEVENT/refs/heads/main/AUTOREJOINIF15KG"))()
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/CARROTEVENT/refs/heads/main/AUTOSPRINKLERCARROT"))()
+
+            task.spawn(function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/CARROTEVENT/refs/heads/main/AUTOHARVESTCARROT"))()
+            end)
+
+            task.spawn(function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/CARROTEVENT/refs/heads/main/AUTOHARVESTCARROT"))()
+            end)
+
+            task.spawn(function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/CARROTEVENT/refs/heads/main/AUTOREJOINIF15KG"))()
+            end)
+
+            task.spawn(function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/CARROTEVENT/refs/heads/main/AUTOSPRINKLERCARROT"))()
+            end)
+            
         end
     end
 end
