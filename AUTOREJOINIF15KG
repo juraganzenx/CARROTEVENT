@@ -1,0 +1,50 @@
+local Players = game:GetService("Players")
+local TeleportService = game:GetService("TeleportService")
+
+local LocalPlayer = Players.LocalPlayer
+local Gardens = workspace:WaitForChild("Gardens")
+
+local KG_LIMIT = 15
+local CHECK_DELAY = 1
+
+-- Cari plot milik player
+local function GetMyPlot()
+    for i = 1, 8 do
+        local Plot = Gardens:FindFirstChild("Plot" .. i)
+
+        if Plot and Plot:GetAttribute("Owner") == LocalPlayer.Name then
+            return Plot
+        end
+    end
+
+    return nil
+end
+
+local Rejoining = false
+
+while task.wait(CHECK_DELAY) do
+    if Rejoining then
+        break
+    end
+
+    local Plot = GetMyPlot()
+    if not Plot then
+        continue
+    end
+
+    for _, Plant in ipairs(Plot.Plants:GetChildren()) do
+        local Part = Plant:FindFirstChild("1")
+
+        if Part and Part:IsA("BasePart") then
+            local KG = Part.Size.X * 1.067
+
+            if KG > KG_LIMIT then
+                Rejoining = true
+                warn(("Plant %.2f KG ditemukan, Rejoining..."):format(KG))
+
+                TeleportService:Teleport(game.PlaceId, LocalPlayer)
+                break
+            end
+        end
+    end
+end
