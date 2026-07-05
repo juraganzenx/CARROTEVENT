@@ -33,6 +33,7 @@ while task.wait(CHECK_DELAY) do
     end
 
     for _, Plant in ipairs(Plot.Plants:GetChildren()) do
+    if not Plant:FindFirstChild("Fruits") then
         local Part = Plant:FindFirstChild("1")
 
         if Part and Part:IsA("BasePart") then
