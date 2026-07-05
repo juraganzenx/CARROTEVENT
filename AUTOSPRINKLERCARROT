@@ -14,12 +14,14 @@ local Networking = require(ReplicatedStorage.SharedModules.Networking)
 local SPRINKLERS = {
     "Legendary Sprinkler",
     "Super Sprinkler",
+    "Rare Sprinkler",
 }
 
 -- Posisi masing-masing sprinkler (membentuk lingkaran)
 local SPRINKLER_OFFSETS = {
-    ["Legendary Sprinkler"]  = Vector3.new(-2.0, 3, -1.5),
-    ["Super Sprinkler"]      = Vector3.new( 0.8, 3, -2.4),
+    ["Legendary Sprinkler"]  = Vector3.new(-2.0, 0, -1.5),
+    ["Super Sprinkler"]      = Vector3.new( 0.8, 0, -2.4),
+    ["Rare Sprinkler"]      = Vector3.new( 2.0, 0, 1.5),
 }
 
 local CHECK_DELAY = 2
