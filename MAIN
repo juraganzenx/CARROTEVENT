@@ -48,11 +48,13 @@ while task.wait(CHECK_DELAY) do
 
         if HasPlantAbove15 then
             print("Ada plant > 15 KG")
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/HUB2/refs/heads/main/TOGARDEN3"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/CARROTEVENT/refs/heads/main/AUTOREJOINIF15KG"))()
         else
             print("Tidak ada plant > 15 KG")
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/HUB2/refs/heads/main/TOGARDEN"))()
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/HUB2/refs/heads/main/TOGARDEN2"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/CARROTEVENT/refs/heads/main/AUTOHARVESTCARROT"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/CARROTEVENT/refs/heads/main/AUTOPLANTCARROT"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/CARROTEVENT/refs/heads/main/AUTOREJOINIF15KG"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/CARROTEVENT/refs/heads/main/AUTOSPRINKLERCARROT"))()
         end
     end
 end
