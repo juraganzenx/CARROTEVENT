@@ -1,17 +1,16 @@
 local Players = game:GetService("Players")
 
-local function checkGoldMoon()
+local LocalPlayer = Players.LocalPlayer
+
+-- CONFIG
+local START_DELAY = 15      -- Tunggu game selesai loading
+local CHECK_DELAY = 1        -- Interval pengecekan
+
+task.wait(START_DELAY)
+
+while task.wait(CHECK_DELAY) do
     if not workspace:FindFirstChild("Goldmoon") then
-        Players.LocalPlayer:Kick("Gold Moon tidak aktif. Disconnecting...")
+        LocalPlayer:Kick("Gold Moon tidak aktif. Disconnecting...")
+        break
     end
 end
-
--- Cek saat script dijalankan
-checkGoldMoon()
-
--- Pantau jika Goldmoon dihapus dari Workspace
-workspace.ChildRemoved:Connect(function(child)
-    if child.Name == "Goldmoon" then
-        Players.LocalPlayer:Kick("Gold Moon telah berakhir. Disconnecting...")
-    end
-end)
