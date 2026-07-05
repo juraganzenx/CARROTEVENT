@@ -73,11 +73,11 @@ while task.wait(CHECK_DELAY) do
             end)
 
             task.spawn(function()
-                loadstring(game:HttpGet(https://raw.githubusercontent.com/juraganzenx/HUB2/refs/heads/main/SELLALL"))()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/HUB2/refs/heads/main/SELLALL"))()
             end)
 
             task.spawn(function()
-                loadstring(game:HttpGet(https://raw.githubusercontent.com/juraganzenx/CARROTEVENT/refs/heads/main/NOTIFDISCORD"))()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/CARROTEVENT/refs/heads/main/NOTIFDISCORD"))()
             end)
             
         end
