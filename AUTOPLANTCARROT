@@ -129,7 +129,7 @@ local BottomFace = Plot.Visual.BedSection:WaitForChild("BottomFace")
 --------------------------------------------------
 
 local POINTS_PER_RING = 5
-local MAX_RING = 5 -- hanya gunakan 5 ring
+local MAX_RING = 8 -- hanya gunakan 5 ring
 local RADIUS_STEP = 0.55
 local START_RADIUS = 0.5
 
