@@ -8,6 +8,9 @@ local CHECK_DELAY = 1
 
 local LastState = nil
 
+-- Tunggu loading game
+task.wait(15)
+
 -- Cari plot milik player
 local function GetMyPlot()
     for i = 1, 8 do
@@ -31,31 +34,28 @@ while task.wait(CHECK_DELAY) do
     local HasPlantAbove15 = false
 
     for _, Plant in ipairs(Plot.Plants:GetChildren()) do
-    if not Plant:FindFirstChild("Fruits") then
-        local Part = Plant:FindFirstChild("1")
+        if not Plant:FindFirstChild("Fruits") then
+            local Part = Plant:FindFirstChild("1")
 
-        if Part and Part:IsA("BasePart") then
-            local KG = Part.Size.X * 1.067
+            if Part and Part:IsA("BasePart") then
+                local KG = Part.Size.X * 1.067
 
-            if KG > KG_LIMIT then
-                HasPlantAbove15 = true
-                break
+                if KG > KG_LIMIT then
+                    HasPlantAbove15 = true
+                    break
+                end
             end
         end
-    end
     end
 
     if LastState ~= HasPlantAbove15 then
         LastState = HasPlantAbove15
 
         if HasPlantAbove15 then
-
             task.spawn(function()
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/CARROTEVENT/refs/heads/main/DISCONECTEDIFNOTGOLD"))()
             end)
-            
         else
-
             task.spawn(function()
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/CARROTEVENT/refs/heads/main/AUTOPLANTCARROT"))()
             end)
@@ -79,7 +79,6 @@ while task.wait(CHECK_DELAY) do
             task.spawn(function()
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/CARROTEVENT/refs/heads/main/NOTIFDISCORD"))()
             end)
-            
         end
     end
 end
