@@ -9,8 +9,11 @@ local CHECK_DELAY = 1        -- Interval pengecekan
 task.wait(START_DELAY)
 
 while task.wait(CHECK_DELAY) do
-    if not workspace:FindFirstChild("Goldmoon") then
-        LocalPlayer:Kick("Gold Moon tidak aktif. Disconnecting...")
+    local HasGoldMoon = workspace:FindFirstChild("Goldmoon")
+    local HasRainbowMoon = workspace:FindFirstChild("RainbowMoon")
+
+    if not HasGoldMoon and not HasRainbowMoon then
+        LocalPlayer:Kick("Gold Moon / Rainbow Moon tidak aktif. Disconnecting...")
         break
     end
 end
