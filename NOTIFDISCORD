@@ -1,0 +1,125 @@
+local Players = game:GetService("Players")
+local HttpService = game:GetService("HttpService")
+
+local LocalPlayer = Players.LocalPlayer
+local Gardens = workspace:WaitForChild("Gardens")
+
+--------------------------------------------------
+-- CONFIG
+--------------------------------------------------
+
+local WEBHOOK = "https://discord.com/api/webhooks/1476987739898515571/46Ws80ynwg5pYRC_ioOxxiYwwsS4odCDEySKSdZ8r4DNSsdrQPzTmjh49Tomq_1Wt1kO"
+local KG_LIMIT = 15
+local CHECK_DELAY = 1
+
+--------------------------------------------------
+-- CACHE
+--------------------------------------------------
+
+local SentPlants = {}
+
+--------------------------------------------------
+-- MY PLOT
+--------------------------------------------------
+
+local function GetMyPlot()
+    for i = 1, 8 do
+        local Plot = Gardens:FindFirstChild("Plot" .. i)
+
+        if Plot and Plot:GetAttribute("Owner") == LocalPlayer.Name then
+            return Plot
+        end
+    end
+
+    return nil
+end
+
+--------------------------------------------------
+-- DISCORD
+--------------------------------------------------
+
+local function SendDiscord(PlantName, KG, PlantId)
+    local Data = {
+        ["content"] = "@everyone",
+        ["embeds"] = {{
+            ["title"] = "🌱 Plant > 15 KG Detected",
+            ["color"] = 65280,
+            ["fields"] = {
+                {
+                    ["name"] = "Plant",
+                    ["value"] = PlantName,
+                    ["inline"] = true
+                },
+                {
+                    ["name"] = "Weight",
+                    ["value"] = string.format("%.2f KG", KG),
+                    ["inline"] = true
+                },
+                {
+                    ["name"] = "Plant ID",
+                    ["value"] = tostring(PlantId),
+                    ["inline"] = false
+                },
+                {
+                    ["name"] = "Player",
+                    ["value"] = LocalPlayer.Name,
+                    ["inline"] = true
+                },
+                {
+                    ["name"] = "JobId",
+                    ["value"] = game.JobId,
+                    ["inline"] = false
+                }
+            },
+            ["footer"] = {
+                ["text"] = "Auto Plant Detector"
+            }
+        }}
+    }
+
+    request({
+        Url = WEBHOOK,
+        Method = "POST",
+        Headers = {
+            ["Content-Type"] = "application/json"
+        },
+        Body = HttpService:JSONEncode(Data)
+    })
+end
+
+--------------------------------------------------
+-- LOOP
+--------------------------------------------------
+
+while task.wait(CHECK_DELAY) do
+    local Plot = GetMyPlot()
+
+    if not Plot then
+        continue
+    end
+
+    for _, Plant in ipairs(Plot.Plants:GetChildren()) do
+
+        -- Hanya plant TANPA Fruits
+        if not Plant:FindFirstChild("Fruits") then
+
+            local Part = Plant:FindFirstChild("1")
+            local PlantId = Plant:GetAttribute("PlantId")
+
+            if Part and Part:IsA("BasePart") and PlantId then
+
+                local KG = Part.Size.X * 1.067
+
+                if KG > KG_LIMIT and not SentPlants[PlantId] then
+                    SentPlants[PlantId] = true
+
+                    SendDiscord(
+                        Plant.Name,
+                        KG,
+                        PlantId
+                    )
+                end
+            end
+        end
+    end
+end
