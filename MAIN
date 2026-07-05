@@ -53,7 +53,7 @@ while task.wait(CHECK_DELAY) do
 
         if HasPlantAbove15 then
             task.spawn(function()
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/CARROTEVENT/refs/heads/main/DISCONECTEDIFNOTGOLDD"))()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/CARROTEVENT/refs/heads/main/DISCONECTEDIFNOTGOLD"))()
             end)
         else
             task.spawn(function()
