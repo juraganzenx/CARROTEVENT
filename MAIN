@@ -65,6 +65,14 @@ while task.wait(CHECK_DELAY) do
             end)
 
             task.spawn(function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/CARROTEVENT/refs/heads/main/AUTOHARVESTCARROT"))()
+            end)
+
+            task.spawn(function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/CARROTEVENT/refs/heads/main/AUTOHARVESTCARROT"))()
+            end)
+
+            task.spawn(function()
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/CARROTEVENT/refs/heads/main/AUTOREJOINIF15KG"))()
             end)
 
