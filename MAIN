@@ -63,32 +63,11 @@ while task.wait(CHECK_DELAY) do
         else
 
             task.spawn(function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/CARROTEVENT/refs/heads/main/DISCONECTEDIFNOTGOLD"))()
+            end)
+
+            task.spawn(function()
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/HUB2/refs/heads/main/DESTROYPLOT"))()
-            end)
-
-            task.spawn(function()
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/CARROTEVENT/refs/heads/main/AUTOPLANTCARROT"))()
-            end)
-
-            task.spawn(function()
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/CARROTEVENT/refs/heads/main/AUTOHARVESTCARROT"))()
-            end)
-
-            task.spawn(function()
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/CARROTEVENT/refs/heads/main/AUTOHARVESTCARROT"))()
-            end)
-
-            task.spawn(function()
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/CARROTEVENT/refs/heads/main/AUTOHARVESTCARROT"))()
-            end)
-
-
-            task.spawn(function()
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/CARROTEVENT/refs/heads/main/AUTOSPRINKLERCARROT"))()
-            end)
-
-            task.spawn(function()
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/juraganzenx/HUB2/refs/heads/main/SELLALL"))()
             end)
 
         end
