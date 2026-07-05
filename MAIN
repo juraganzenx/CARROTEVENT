@@ -31,6 +31,7 @@ while task.wait(CHECK_DELAY) do
     local HasPlantAbove15 = false
 
     for _, Plant in ipairs(Plot.Plants:GetChildren()) do
+    if not Plant:FindFirstChild("Fruits") then
         local Part = Plant:FindFirstChild("1")
 
         if Part and Part:IsA("BasePart") then
@@ -41,6 +42,7 @@ while task.wait(CHECK_DELAY) do
                 break
             end
         end
+    end
     end
 
     if LastState ~= HasPlantAbove15 then
