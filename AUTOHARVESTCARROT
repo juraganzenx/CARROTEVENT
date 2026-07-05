@@ -7,7 +7,7 @@ local Gardens = workspace:WaitForChild("Gardens")
 local Networking = require(ReplicatedStorage.SharedModules.Networking)
 
 local KG_LIMIT = 15
-local CHECK_DELAY = 0.5
+local CHECK_DELAY = 0
 
 -- Cari plot milik player
 local function GetMyPlot()
