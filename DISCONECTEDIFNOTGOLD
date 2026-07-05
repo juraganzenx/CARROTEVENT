@@ -3,17 +3,46 @@ local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
 -- CONFIG
-local START_DELAY = 5      -- Tunggu game selesai loading
-local CHECK_DELAY = 1        -- Interval pengecekan
+local START_DELAY = 5 -- Tunggu game loading
+local CHECK_DELAY = 1  -- Interval pengecekan
 
 task.wait(START_DELAY)
 
 while task.wait(CHECK_DELAY) do
-    local HasGoldMoon = workspace:FindFirstChild("Goldmoon")
-    local HasRainbowMoon = workspace:FindFirstChild("RainbowMoon")
+    local DisconnectReason = nil
 
-    if not HasGoldMoon and not HasRainbowMoon then
-        LocalPlayer:Kick("Gold Moon / Rainbow Moon tidak aktif. Disconnecting...")
+    -- Bloodmoon
+    if workspace:FindFirstChild("ActiveBloodmoon") then
+        DisconnectReason = "Bloodmoon"
+    end
+
+    -- Aurora
+    if workspace:GetAttribute("AuroraEvent") then
+        DisconnectReason = "Aurora"
+    end
+
+    -- Lightning
+    if workspace:GetAttribute("LightningEvent") then
+        DisconnectReason = "Lightning"
+    end
+
+    -- Snowfall
+    if workspace:GetAttribute("SnowfallEvent") then
+        DisconnectReason = "Snowfall"
+    end
+
+    -- Starfall
+    if workspace:GetAttribute("ShootingStarEvent") then
+        DisconnectReason = "Starfall"
+    end
+
+    -- Sunburst
+    if workspace:GetAttribute("SunburstEvent") then
+        DisconnectReason = "Sunburst"
+    end
+
+    if DisconnectReason then
+        LocalPlayer:Kick("Weather terdeteksi: " .. DisconnectReason .. ". Disconnecting...")
         break
     end
 end
