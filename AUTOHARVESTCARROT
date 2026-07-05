@@ -39,8 +39,8 @@ while task.wait(CHECK_DELAY) do
 
             if KG < KG_LIMIT then
                 Networking.Garden.CollectFruit:Fire(PlantId, "")
-                print(("Harvest %s | %.2f KG"):format(Plant.Name, KG))
             end
         end
     end
+end
 end
