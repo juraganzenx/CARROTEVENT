@@ -1,0 +1,215 @@
+--SPRINKLER V2 UNEQUIP CARROT
+-- PLACE MULTI SPRINKLER AIRIN
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local LocalPlayer = Players.LocalPlayer
+local Networking = require(ReplicatedStorage.SharedModules.Networking)
+
+--------------------------------------------------
+-- CONFIG
+--------------------------------------------------
+
+local SPRINKLERS = {
+    "Legendary Sprinkler",
+    "Super Sprinkler",
+}
+
+-- Posisi masing-masing sprinkler (membentuk lingkaran)
+local SPRINKLER_OFFSETS = {
+    ["Legendary Sprinkler"]  = Vector3.new(-2.0, 3, -1.5),
+    ["Super Sprinkler"]      = Vector3.new( 0.8, 3, -2.4),
+}
+
+local CHECK_DELAY = 2
+
+--------------------------------------------------
+-- FUNCTIONS
+--------------------------------------------------
+
+local function GetPlot()
+    local PlotId = LocalPlayer:GetAttribute("PlotId")
+
+    if not PlotId then
+        return nil, nil
+    end
+
+    return workspace.Gardens:FindFirstChild("Plot" .. PlotId), PlotId
+end
+
+local function HasSprinkler(SprinklersFolder, SprinklerName)
+    if not SprinklersFolder then
+        return false
+    end
+
+    for _, Obj in ipairs(SprinklersFolder:GetChildren()) do
+        if Obj:GetAttribute("SprinklerName") == SprinklerName then
+            return true
+        end
+    end
+
+    return false
+end
+
+local function EquipSprinkler(SprinklerName)
+    local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+    local Backpack = LocalPlayer:WaitForChild("Backpack")
+
+    -- Sudah di tangan
+    for _, Tool in ipairs(Character:GetChildren()) do
+        if Tool:IsA("Tool") and Tool:GetAttribute("Sprinkler") == SprinklerName then
+            return Tool
+        end
+    end
+
+    -- Cari di backpack
+    for _, Tool in ipairs(Backpack:GetChildren()) do
+        if Tool:IsA("Tool") and Tool:GetAttribute("Sprinkler") == SprinklerName then
+            local Humanoid = Character:FindFirstChildOfClass("Humanoid")
+
+            if Humanoid then
+                Humanoid:EquipTool(Tool)
+                task.wait(0.35)
+            end
+
+            return Character:FindFirstChild(Tool.Name) or Tool
+        end
+    end
+
+    return nil
+end
+
+local function UnequipTools()
+    local Character = LocalPlayer.Character
+    if not Character then
+        return
+    end
+
+    local Humanoid = Character:FindFirstChildOfClass("Humanoid")
+    if Humanoid then
+        Humanoid:UnequipTools()
+    end
+end
+
+local function GetFrontBedPosition(Plot)
+    local Visual = Plot:FindFirstChild("Visual")
+    if not Visual then
+        return nil
+    end
+
+    local FirstBed
+
+    for _, Obj in ipairs(Visual:GetChildren()) do
+        if Obj.Name == "BedSection" then
+            FirstBed = Obj
+            break
+        end
+    end
+
+    if not FirstBed then
+        return nil
+    end
+
+    local BottomFace = FirstBed:FindFirstChild("BottomFace")
+    if not BottomFace then
+        return nil
+    end
+
+    return BottomFace.Position
+end
+
+local function PlaceSprinklers()
+    local Plot, PlotId = GetPlot()
+
+    if not Plot then
+        return
+    end
+
+    local SprinklersFolder = Plot:FindFirstChild("Sprinklers")
+    if not SprinklersFolder then
+        return
+    end
+
+    local BasePosition = GetFrontBedPosition(Plot)
+    if not BasePosition then
+        warn("BottomFace tidak ditemukan")
+        return
+    end
+
+    local Placed = false
+
+    for _, SprinklerName in ipairs(SPRINKLERS) do
+        if not HasSprinkler(SprinklersFolder, SprinklerName) then
+            local Tool = EquipSprinkler(SprinklerName)
+
+            if Tool then
+                local Offset = SPRINKLER_OFFSETS[SprinklerName] or Vector3.new(0, 0, 0)
+
+                Networking.Place.PlaceSprinkler:Fire(
+                    BasePosition + Offset,
+                    SprinklerName,
+                    Tool,
+                    PlotId
+                )
+
+                print("[Sprinkler] Placed:", SprinklerName)
+                Placed = true
+
+                task.wait(0.5)
+            end
+        end
+    end
+
+    -- Setelah selesai pasang semua sprinkler, simpan lagi ke Backpack
+    if Placed then
+        task.wait(0.2)
+        UnequipTools()
+    end
+end
+
+--------------------------------------------------
+-- COUNT BIG FRUITS
+--------------------------------------------------
+
+local function CountBigFruits()
+    local Plot = GetPlot()
+    if not Plot then
+        return 0
+    end
+
+    local Plants = Plot:FindFirstChild("Plants")
+    if not Plants then
+        return 0
+    end
+
+    local Count = 0
+
+    for _, Plant in ipairs(Plants:GetChildren()) do
+        local Fruits = Plant:FindFirstChild("Fruits")
+
+        if Fruits then
+            for _, Fruit in ipairs(Fruits:GetChildren()) do
+                local SizeMulti = Fruit:GetAttribute("SizeMulti")
+
+                if SizeMulti and SizeMulti >= 5 then
+                    Count += 1
+                end
+            end
+        end
+    end
+
+    return Count
+end
+
+--------------------------------------------------
+-- LOOP
+--------------------------------------------------
+
+while task.wait(CHECK_DELAY) do
+    local BigFruitCount = CountBigFruits()
+
+    if BigFruitCount < 30 then
+        pcall(PlaceSprinklers)
+    end
+end
