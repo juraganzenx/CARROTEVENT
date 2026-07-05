@@ -1,0 +1,45 @@
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local LocalPlayer = Players.LocalPlayer
+local Gardens = workspace:WaitForChild("Gardens")
+
+local Networking = require(ReplicatedStorage.SharedModules.Networking)
+
+local KG_LIMIT = 15
+local CHECK_DELAY = 0.5
+
+-- Cari plot milik player
+local function GetMyPlot()
+    for i = 1, 8 do
+        local Plot = Gardens:FindFirstChild("Plot" .. i)
+
+        if Plot and Plot:GetAttribute("Owner") == LocalPlayer.Name then
+            return Plot
+        end
+    end
+
+    return nil
+end
+
+while task.wait(CHECK_DELAY) do
+    local Plot = GetMyPlot()
+
+    if not Plot then
+        continue
+    end
+
+    for _, Plant in ipairs(Plot.Plants:GetChildren()) do
+        local PlantId = Plant:GetAttribute("PlantId")
+        local Part = Plant:FindFirstChild("1")
+
+        if PlantId and Part and Part:IsA("BasePart") then
+            local KG = Part.Size.X * 1.067
+
+            if KG < KG_LIMIT then
+                Networking.Garden.CollectFruit:Fire(PlantId, "")
+                print(("Harvest %s | %.2f KG"):format(Plant.Name, KG))
+            end
+        end
+    end
+end
