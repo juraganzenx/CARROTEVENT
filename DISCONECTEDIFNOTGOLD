@@ -27,7 +27,7 @@ while task.wait(CHECK_DELAY) do
     end
 
     -- Snowfall
-    if workspace:GetAttribute("SnowfallEvent") then
+    if workspace:FindFirstChild("ActiveBlizzard") then
         DisconnectReason = "Snowfall"
     end
 
