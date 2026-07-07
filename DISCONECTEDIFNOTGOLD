@@ -3,7 +3,7 @@ local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
 -- CONFIG
-local START_DELAY = 0 -- Tunggu game loading
+local START_DELAY = 15 -- Tunggu game loading
 local CHECK_DELAY = 1  -- Interval pengecekan
 
 task.wait(START_DELAY)
@@ -22,13 +22,14 @@ while task.wait(CHECK_DELAY) do
     end
 
     -- Lightning
-    if workspace:FindFirstChild("StormRainDrops") then
+    if workspace:FindFirstChild("WeatherEffects")
+        and workspace.WeatherEffects:FindFirstChild("LightningStrike") then
         DisconnectReason = "Lightning"
     end
 
     -- Snowfall (Blizzard)
     if workspace:FindFirstChild("ActiveBlizzard") then
-        DisconnectReason = "Snowfall"
+        DisconnectReason = "Snowfall (Blizzard)"
     end
 
     -- Starfall
