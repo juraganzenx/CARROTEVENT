@@ -22,11 +22,11 @@ while task.wait(CHECK_DELAY) do
     end
 
     -- Lightning
-    if workspace:GetAttribute("LightningEvent") then
+    if workspace:FindFirstChild("StormRainDrops") then
         DisconnectReason = "Lightning"
     end
 
-    -- Snowfall
+    -- Snowfall (Blizzard)
     if workspace:FindFirstChild("ActiveBlizzard") then
         DisconnectReason = "Snowfall"
     end
